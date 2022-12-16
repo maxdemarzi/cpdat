@@ -1,0 +1,21 @@
+@args(String code, String error)
+
+@views.partials._head.template()
+<body>
+<div class="main-container is-full">
+    <div class="is-justify-content-center">
+        <div class="is-center">
+            <h1 class="has-text-primary">@raw(code)</h1>
+            <p>
+                @error
+            </p>
+            <p>
+                <a href="/">Return to home page</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@views.partials._prefetchjs.template()
+</body>
+</html>
