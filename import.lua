@@ -1,3 +1,15 @@
+for i, doc in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/document_dictionary_20201216.csv", ",") do
+    local properties = "{\"title\":".."\""..doc.title.."\""
+    if (doc.subtitle ~= "NA") then
+       properties = properties..",\"subtitle\":".."\""..doc.subtitle.."\""
+    end
+    if (doc.date ~= "NA") then
+       properties = properties..",\"date\":".."\""..doc.doc_date.."\""
+    end
+       properties = properties.."}"
+       NodeAdd("Document", doc.document_id, properties)
+end
+
 for i, reason in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/list_presence_dictionary_20201216.csv", ",") do
    NodeAdd("Reason_Listed", reason.list_presence_id,
     "{\"name\":".."\""..reason.name.."\","..
