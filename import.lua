@@ -80,6 +80,11 @@ for functional_use_id, report_funcuse in pairs(has_use) do
     RelationshipAdd("HAS_USE", "Function", report_funcuse, "Function_Use", functional_use_id)
 end
 
+for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/functional_use_data_20201216.csv", ",") do
+  RelationshipAdd("REPORTED_USE", "Document", rel.document_id, "Function_Use", rel.functional_use_id)
+end
+
+
 for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/HHE_data_20201216.csv", ",") do
   RelationshipAdd("HAS_CHEMICAL", "Document", rel.document_id, "Chemical", rel.chemical_id)
 end

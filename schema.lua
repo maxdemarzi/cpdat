@@ -34,5 +34,6 @@ RelationshipTypeInsert("HAS_CHEMICAL")
 RelationshipTypeInsert("HAS_FUNCTION")
 RelationshipTypeInsert("HAS_USE")
 RelationshipTypeInsert("USES_CHEMICAL")
+RelationshipTypeInsert("REPORTED_USE")
 
 NodeTypesGet(), RelationshipTypesGet()
