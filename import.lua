@@ -1,3 +1,25 @@
+for i, chem in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/chemical_dictionary_20201216.csv", ",") do
+    local properties = "{\"name\":".."\""..chem.raw_chem_name.."\""
+    if (chem.raw_casrn ~= "NA") then
+       properties = properties..",\"subtitle\":".."\""..chem.raw_casrn.."\""
+    end
+    if (chem.preferred_name ~= "NA") then
+       properties = properties..",\"preferred_name\":".."\""..chem.preferred_name.."\""
+    end
+    if (chem.preferred_casrn ~= "NA") then
+        properties = properties..",\"preferred_casrn\":".."\""..chem.preferred_casrn.."\""
+    end
+    if (chem.DTXSID ~= "NA") then
+        properties = properties..",\"DTXSID\":".."\""..chem.DTXSID.."\""
+    end
+    if (chem.curation_level ~= "") then
+       properties = properties..",\"curation_level\":".."\""..chem.curation_level.."\""
+    end
+       properties = properties.."}"
+       NodeAdd("Chemical", chem.chemical_id, properties)
+end
+
+
 for i, doc in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/document_dictionary_20201216.csv", ",") do
     local properties = "{\"title\":".."\""..doc.title.."\""
     if (doc.subtitle ~= "NA") then

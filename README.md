@@ -7,6 +7,16 @@ Data Sources:
 
 Schema:
 
+File: chemical_dictionary_20201216.csv
+
+    Chemical(chemical_id)
+        name:string
+        casrn:string
+        preferred_name:string
+        preferred_casrn:string
+        DTXSID:string
+        curation_level:string
+
 File: document_dictionary_20201216.csv
 
     Document(document_id)
