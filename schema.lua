@@ -16,4 +16,7 @@ NodePropertyTypeAdd("PUC_Type", "description", "string")
 NodePropertyTypeAdd("PUC_Type", "code", "string")
 NodePropertyTypeAdd("PUC_Type", "kind", "string")
 
+RelationshipTypeInsert("HAS_FAMILY")
+RelationshipTypeInsert("HAS_TYPE")
+
 NodeTypesGet(), RelationshipTypesGet()
