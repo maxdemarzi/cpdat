@@ -42,23 +42,46 @@ end
 local has_family = {}
 local has_type = {}
 for i, puc in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/PUC_dictionary_20201216.csv", ",") do
-   NodeAdd("PUC_Category", puc.gen_cat)
-   NodeAdd("PUC_Family", puc.prod_fam)
    NodeAdd("PUC_Type", puc.puc_id,
     "{\"name\":".."\""..puc.prod_type.."\","..
       "\"description\":".."\""..puc.description.."\","..
       "\"code\":".."\""..puc.puc_code.."\","..
       "\"kind\":".."\""..puc.kind.."\"}")
-    has_family[puc.gen_cat] = puc.prod_fam
-    has_type[puc.prod_fam] = puc.puc_id
+    has_family[puc.prod_fam] = puc.gen_cat
+    has_type[puc.puc_id] = puc.prod_fam
 end
 
-for cat, fam in pairs(has_family) do
+for fam, cat in pairs(has_family) do
+    NodeAdd("PUC_Category", cat)
+    NodeAdd("PUC_Family", fam)
     RelationshipAdd("HAS_FAMILY", "PUC_Category", cat, "PUC_Family", fam)
 end
 
-for fam, type in pairs(has_type) do
+for type, fam in pairs(has_type) do
     RelationshipAdd("HAS_TYPE", "PUC_Family", fam, "PUC_Type", type)
+end
+
+local has_function = {}
+local has_use = {}
+for i, fud in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/functional_use_dictionary_20201216.csv", ",") do
+    NodeAdd("Function_Use", fud.functional_use_id)
+    RelationshipAdd("USES_CHEMICAL", "Function_Use", fud.functional_use_id, "Chemical", fud.chemical_id)
+    has_function[fud.report_funcuse] = fud.oecd_function
+    has_use[fud.functional_use_id] = fud.report_funcuse
+end
+
+for report_funcuse, oecd_function in pairs(has_function) do
+    NodeAdd("Function_Category", oecd_function)
+    NodeAdd("Function", report_funcuse)
+    RelationshipAdd("HAS_FUNCTION", "Function_Category", oecd_function, "Function", report_funcuse)
+end
+
+for functional_use_id, report_funcuse in pairs(has_use) do
+    RelationshipAdd("HAS_USE", "Function", report_funcuse, "Function_Use", functional_use_id)
+end
+
+for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/HHE_data_20201216.csv", ",") do
+  RelationshipAdd("HAS_CHEMICAL", "Document", rel.document_id, "Chemical", rel.chemical_id)
 end
 
 local nodes_count = AllNodesCounts()
