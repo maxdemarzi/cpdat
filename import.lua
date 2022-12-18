@@ -89,6 +89,30 @@ for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/HHE_
   RelationshipAdd("HAS_CHEMICAL", "Document", rel.document_id, "Chemical", rel.chemical_id)
 end
 
+local unique_reported = Roar.new()
+local unique_present = Roar.new()
+for i, lpd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/list_presence_data_20201216.csv", ",") do
+    if (lpd.list_presence_id ~= "NA") then
+      local lpi = tonumber(lpd.list_presence_id)
+      unique_reported:add( (tonumber(lpd.document_id) * 1000) + lpi)
+      if (lpd.chemical_id ~= "NA") then
+         unique_present:add( (tonumber(lpd.chemical_id) * 1000) + lpi)
+      end
+    end
+end
+
+for _, id in ipairs(unique_reported:getIds()) do
+    local lpi =  id % 1000
+    local doc_id = (id - lpi) / 1000
+     RelationshipAdd("REPORTED_REASON", "Document", tostring(doc_id), "Function_Use", tostring(lpi) )
+end
+
+for _, id in ipairs(unique_present:getIds()) do
+    local lpi =  id % 1000
+    local chem_id = (id - lpi) / 1000
+     RelationshipAdd("REPORTED_PRESENT", "Chemical", tostring(chem_id), "Function_Use", tostring(lpi) )
+end
+
 local nodes_count = AllNodesCounts()
 local rels_count= AllRelationshipsCounts()
 nodes_count, rels_count
