@@ -104,13 +104,13 @@ end
 for _, id in ipairs(unique_reported:getIds()) do
     local lpi =  id % 1000
     local doc_id = (id - lpi) / 1000
-     RelationshipAdd("REPORTED_REASON", "Document", tostring(doc_id), "Function_Use", tostring(lpi) )
+     RelationshipAdd("REPORTED_REASON", "Document", tostring(doc_id), "Reason_Listed", tostring(lpi) )
 end
 
 for _, id in ipairs(unique_present:getIds()) do
     local lpi =  id % 1000
     local chem_id = (id - lpi) / 1000
-     RelationshipAdd("REPORTED_PRESENT", "Chemical", tostring(chem_id), "Function_Use", tostring(lpi) )
+     RelationshipAdd("IS_PRESENT", "Chemical", tostring(chem_id), "Reason_Listed", tostring(lpi) )
 end
 
 local nodes_count = AllNodesCounts()

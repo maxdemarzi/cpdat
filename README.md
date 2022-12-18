@@ -43,6 +43,11 @@ File: HHE_data_20201216.csv
 
     HAS_CHEMICAL(document_id, chemical_id)
 
+File: list_presence_data_20201216.csv
+
+    REPORTED_REASON(document_id, list_presence_id)
+    IS_PRESENT(chemical_id, list_presence_id)
+
 File: list_presence_dictionary_20201216.csv
 
     Reason_Listed(list_presence_id)
