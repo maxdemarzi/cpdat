@@ -64,24 +64,24 @@ end
 local has_function = {}
 local has_use = {}
 for i, fud in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/functional_use_dictionary_20201216.csv", ",") do
-    NodeAdd("Function_Use", fud.functional_use_id)
-    RelationshipAdd("USES_CHEMICAL", "Function_Use", fud.functional_use_id, "Chemical", fud.chemical_id)
+    NodeAdd("Function", fud.functional_use_id)
+    RelationshipAdd("USES_CHEMICAL", "Function", fud.functional_use_id, "Chemical", fud.chemical_id)
     has_function[fud.report_funcuse] = fud.oecd_function
     has_use[fud.functional_use_id] = fud.report_funcuse
 end
 
 for report_funcuse, oecd_function in pairs(has_function) do
     NodeAdd("Function_Category", oecd_function)
-    NodeAdd("Function", report_funcuse)
-    RelationshipAdd("HAS_FUNCTION", "Function_Category", oecd_function, "Function", report_funcuse)
+    NodeAdd("Function_Use", report_funcuse)
+    RelationshipAdd("HAS_FUNCTION", "Function_Category", oecd_function, "Function_Use", report_funcuse)
 end
 
 for functional_use_id, report_funcuse in pairs(has_use) do
-    RelationshipAdd("HAS_USE", "Function", report_funcuse, "Function_Use", functional_use_id)
+    RelationshipAdd("HAS_USE", "Function_Use", report_funcuse, "Function", functional_use_id)
 end
 
 for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/functional_use_data_20201216.csv", ",") do
-  RelationshipAdd("REPORTED_USE", "Document", rel.document_id, "Function_Use", rel.functional_use_id)
+  RelationshipAdd("REPORTED_USE", "Document", rel.document_id, "Function", rel.functional_use_id)
 end
 
 

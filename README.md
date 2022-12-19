@@ -27,26 +27,26 @@ File: document_dictionary_20201216.csv
 
 File: functional_use_data_20201216.csv
 
-    REPORTED_USE(document_id, functional_use_id)
+    REPORTED_USE(Document, document_id, Function, functional_use_id)
 
 File: functional_use_dictionary_20201216.csv
 
     Function_Category(oecd_function)
-    Function(report_funcuse)
-    Function_Use(functional_use_id)
+    Function_Use(report_funcuse)
+    Function(functional_use_id)
 
-    HAS_FUNCTION(oecd_function, report_funcuse)
-    HAS_USE(report_funcuse, functional_use_id)
-    USES_CHEMICAL(functional_use_id, chemical_id)
+    HAS_FUNCTION(Function_Category, oecd_function, Function_Use, report_funcuse)
+    HAS_USE(Function_Use, report_funcuse, Function, functional_use_id)
+    USES_CHEMICAL(Function, functional_use_id, Chemical, chemical_id)
 
 File: HHE_data_20201216.csv
 
-    HAS_CHEMICAL(document_id, chemical_id)
+    HAS_CHEMICAL(Document, document_id, Chemical, chemical_id)
 
 File: list_presence_data_20201216.csv
 
-    REPORTED_REASON(document_id, list_presence_id)
-    IS_PRESENT(chemical_id, list_presence_id)
+    REPORTED_REASON(Document, document_id, Reason_Listed, list_presence_id)
+    IS_PRESENT(Chemical, chemical_id, Reason_Listed, list_presence_id)
 
 File: list_presence_dictionary_20201216.csv
 
@@ -54,6 +54,14 @@ File: list_presence_dictionary_20201216.csv
         name:string
         definition:string
         kind:string
+
+File: product_composition_data_20201216.csv
+
+    Brand(brand_name)
+    Product(prod_title)
+    HAS_BRAND(Product, prod_title, Brand, brand_name)
+    IS_TYPE(Product, prod_title, PUC_Type, puc_id)
+    HAS_USE(Product, prod_title, Function, functional_use_id)
 
 File: PUC_dictionary_20201216.csv
 
@@ -65,5 +73,5 @@ File: PUC_dictionary_20201216.csv
         code:String
         kind:String
 
-    HAS_FAMILY(gen_cat, prod_fam)
-    HAS_TYPE(prod_fam, puc_id)
+    HAS_FAMILY(PUC_Category, gen_cat, PUC_Family, prod_fam)
+    HAS_TYPE(PUC_Family, prod_fam, PUC_Type, puc_id)
