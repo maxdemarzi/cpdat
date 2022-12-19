@@ -27,7 +27,7 @@ File: document_dictionary_20201216.csv
 
 File: functional_use_data_20201216.csv
 
-    REPORTED_USE(Document, document_id, Function, functional_use_id)
+    REPORTED_FUNCTION(Document, document_id, Function, functional_use_id)
 
 File: functional_use_dictionary_20201216.csv
 
@@ -35,13 +35,13 @@ File: functional_use_dictionary_20201216.csv
     Function_Use(report_funcuse)
     Function(functional_use_id)
 
-    HAS_FUNCTION(Function_Category, oecd_function, Function_Use, report_funcuse)
-    HAS_USE(Function_Use, report_funcuse, Function, functional_use_id)
+    HAS_USE(Function_Category, oecd_function, Function_Use, report_funcuse)
+    HAS_FUNCTION(Function_Use, report_funcuse, Function, functional_use_id)
     USES_CHEMICAL(Function, functional_use_id, Chemical, chemical_id)
 
 File: HHE_data_20201216.csv
 
-    HAS_CHEMICAL(Document, document_id, Chemical, chemical_id)
+    REPORTED_CHEMICAL(Document, document_id, Chemical, chemical_id)
 
 File: list_presence_data_20201216.csv
 
@@ -61,7 +61,8 @@ File: product_composition_data_20201216.csv
     Product(prod_title)
     HAS_BRAND(Product, prod_title, Brand, brand_name)
     IS_TYPE(Product, prod_title, PUC_Type, puc_id)
-    HAS_USE(Product, prod_title, Function, functional_use_id)
+    FUNCTIONS_AS(Product, prod_title, Function, functional_use_id)
+    HAS_CHEMICAL(Product, prod_title, Chemical, chemical_id)
 
 File: PUC_dictionary_20201216.csv
 

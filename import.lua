@@ -73,20 +73,20 @@ end
 for report_funcuse, oecd_function in pairs(has_function) do
     NodeAdd("Function_Category", oecd_function)
     NodeAdd("Function_Use", report_funcuse)
-    RelationshipAdd("HAS_FUNCTION", "Function_Category", oecd_function, "Function_Use", report_funcuse)
+    RelationshipAdd("HAS_USE", "Function_Category", oecd_function, "Function_Use", report_funcuse)
 end
 
 for functional_use_id, report_funcuse in pairs(has_use) do
-    RelationshipAdd("HAS_USE", "Function_Use", report_funcuse, "Function", functional_use_id)
+    RelationshipAdd("HAS_FUNCTION", "Function_Use", report_funcuse, "Function", functional_use_id)
 end
 
 for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/functional_use_data_20201216.csv", ",") do
-  RelationshipAdd("REPORTED_USE", "Document", rel.document_id, "Function", rel.functional_use_id)
+  RelationshipAdd("REPORTED_FUNCTION", "Document", rel.document_id, "Function", rel.functional_use_id)
 end
 
 
 for i, rel in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/HHE_data_20201216.csv", ",") do
-  RelationshipAdd("HAS_CHEMICAL", "Document", rel.document_id, "Chemical", rel.chemical_id)
+  RelationshipAdd("REPORTED_CHEMICAL", "Document", rel.document_id, "Chemical", rel.chemical_id)
 end
 
 local unique_reported = Roar.new()
@@ -111,6 +111,44 @@ for _, id in ipairs(unique_present:getIds()) do
     local lpi =  id % 1000
     local chem_id = (id - lpi) / 1000
      RelationshipAdd("IS_PRESENT", "Chemical", tostring(chem_id), "Reason_Listed", tostring(lpi) )
+end
+
+local unique_brand = {}
+local has_brand = {}
+local is_type = {}
+local has_use = {}
+for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/product_composition_data_20201216.csv", ",") do
+    unique_brand[pcd.brand_name] = true
+    has_brand[pcd.prod_title] = pcd.brand_name
+    is_type[pcd.prod_title] = pcd.puc_id
+    if (functional_use_id ~= "NA") then
+        has_use[pcd.functional_use_id] = pcd.prod_title
+    end
+end
+
+for brand_name, _ in pairs(unique_brand) do
+    if (brand_name ~= "NA") then
+        NodeAdd("Brand", brand_name)
+    end
+end
+
+for prod_title, brand_name in pairs(has_brand) do
+    NodeAdd("Product", prod_title)
+    if (brand_name ~= "NA") then
+        RelationshipAdd("HAS_BRAND", "Product", prod_title, "Brand", brand_name)
+    end
+end
+
+for functional_use_id, prod_title in pairs(has_use) do
+     RelationshipAdd("FUNCTIONS_AS", "Product", prod_title, "Function", tostring(functional_use_id))
+end
+
+for prod_title, puc_id in pairs(is_type) do
+     RelationshipAdd("IS_TYPE", "Product", prod_title, "PUC_Type", tostring(puc_id))
+end
+
+for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/product_composition_data_20201216.csv", ",") do
+    RelationshipAdd("HAS_CHEMICAL", "Product", pcd.prod_title, "Chemical", tostring(pcd.chemical_id))
 end
 
 local nodes_count = AllNodesCounts()
