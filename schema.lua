@@ -40,6 +40,10 @@ NodePropertyTypeAdd("Product", "clean_max_wf", "double")
 
 NodeTypeInsert("QSUR_Category")
 
+NodeTypeInsert("Substance")
+NodePropertyTypeAdd("Substance", "preferred_name", "string")
+NodePropertyTypeAdd("Substance", "preferred_casrn", "string")
+
 RelationshipTypeInsert("FUNCTIONS_AS")
 RelationshipTypeInsert("HAS_BRAND")
 RelationshipTypeInsert("HAS_CHEMICAL")
@@ -48,6 +52,7 @@ RelationshipTypeInsert("HAS_FUNCTION")
 RelationshipTypeInsert("HAS_TYPE")
 RelationshipTypeInsert("HAS_USE")
 RelationshipTypeInsert("IS_PRESENT")
+RelationshipTypeInsert("IS_SUBSTANCE")
 RelationshipTypeInsert("PROBABLE_USE")
 RelationshipPropertyTypeAdd("PROBABLE_USE", "probability", "double")
 RelationshipTypeInsert("REPORTED_CHEMICAL")

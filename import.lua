@@ -164,20 +164,34 @@ end
 
 local chemicals = {}
 for i, chemical in pairs(AllNodes("Chemical", 0, AllNodesCount("Chemical"))) do
-    chemicals[chemical:getProperty("DTXSID")] = chemical:getKey()
+    if (chemicals[chemical:getProperty("DTXSID")] ~= nil) then
+        table.insert(chemicals[chemical:getProperty("DTXSID")], chemical:getKey() )
+    else
+        local nested = { chemical:getKey() }
+        chemicals[chemical:getProperty("DTXSID")] = nested
+    end
+
 end
 
 local unique_qsur = {}
 for i, qsur in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/QSUR_data_20201216.csv", ",") do
-    local chemical_id = chemicals[qsur.DTXSID]
-    if (chemical_id ~= nil) then
-        if (unique_qsur[qsur.harmonized_function] == nil) then
-            NodeAdd("QSUR_Category", qsur.harmonized_function)
-            unique_qsur[qsur.harmonized_function] = true
-        end
+    NodeAdd("Substance", qsur.DTXSID,
+        "{\"preferred_name\":".."\""..qsur.preferred_name.."\","..
+        "\"preferred_casrn\":".."\""..qsur.preferred_casrn.."\"}")
 
-        RelationshipAdd("PROBABLE_USE", "Chemical", chemical_id, "QSUR_Category", qsur.harmonized_function,
-            "{\"probability\":"..qsur.probability.."}")
+    if (unique_qsur[qsur.harmonized_function] == nil) then
+       NodeAdd("QSUR_Category", qsur.harmonized_function)
+       unique_qsur[qsur.harmonized_function] = true
+    end
+
+    RelationshipAdd("PROBABLE_USE", "Substance", qsur.DTXSID, "QSUR_Category", qsur.harmonized_function,
+                "{\"probability\":"..qsur.probability.."}")
+
+    local chemicals = chemicals[qsur.DTXSID]
+    if (chemicals ~= nil) then
+        for i, chemical_id in pairs(chemicals) do
+            RelationshipAdd("IS_SUBSTANCE", "Chemical", chemical_id, "Substance", qsur.DTXSID)
+        end
     end
 end
 
