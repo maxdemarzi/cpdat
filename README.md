@@ -7,6 +7,8 @@ Data Sources:
 
 Schema:
 
+![Visual of Schema](https://github.com/maxdemarzi/cpdat/blob/main/schema.png?raw=true)
+
 File: chemical_dictionary_20201216.csv
 
     Chemical(chemical_id)
