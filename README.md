@@ -84,3 +84,9 @@ File: PUC_dictionary_20201216.csv
 
     HAS_FAMILY(PUC_Category, gen_cat, PUC_Family, prod_fam)
     HAS_TYPE(PUC_Family, prod_fam, PUC_Type, puc_id)
+
+File: QSUR_data_20201216.csv
+
+    QSUR_Category(harmonized_function)
+    PROBABLE_USE
+        probability:double

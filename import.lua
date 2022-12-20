@@ -114,10 +114,6 @@ for _, id in ipairs(unique_present:getIds()) do
 end
 
 local unique_brand = {}
-local has_brand = {}
-local is_type = {}
-local has_use = {}
-local prod_properties = {}
 local current_product = 0
 for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/product_composition_data_20201216.csv", ",") do
     id = tostring(pcd.product_id)
@@ -150,6 +146,7 @@ for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/prod
            if (unique_brand[pcd.brand_name] ~= nil) then
                RelationshipAdd("HAS_BRAND", "Product", id, "Brand", pcd.brand_name)
            else
+               unique_brand[pcd.brand_name] = true
                NodeAdd("Brand", pcd.brand_name)
                RelationshipAdd("HAS_BRAND", "Product", id, "Brand", pcd.brand_name)
            end
@@ -163,6 +160,25 @@ for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/prod
         RelationshipAdd("FUNCTIONS_AS", "Product", id, "Function", tostring(pcd.functional_use_id))
     end
     RelationshipAdd("HAS_CHEMICAL", "Product", id, "Chemical", tostring(pcd.chemical_id))
+end
+
+local chemicals = {}
+for i, chemical in pairs(AllNodes("Chemical", 0, AllNodesCount("Chemical"))) do
+    chemicals[chemical:getProperty("DTXSID")] = chemical:getKey()
+end
+
+local unique_qsur = {}
+for i, qsur in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/QSUR_data_20201216.csv", ",") do
+    local chemical_id = chemicals[qsur.DTXSID]
+    if (chemical_id ~= nil) then
+        if (unique_qsur[qsur.harmonized_function] == nil) then
+            NodeAdd("QSUR_Category", qsur.harmonized_function)
+            unique_qsur[qsur.harmonized_function] = true
+        end
+
+        RelationshipAdd("PROBABLE_USE", "Chemical", chemical_id, "QSUR_Category", qsur.harmonized_function,
+            "{\"probability\":"..qsur.probability.."}")
+    end
 end
 
 local nodes_count = AllNodesCounts()
