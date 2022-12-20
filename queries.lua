@@ -1,6 +1,6 @@
 -- Queries:
-    -- Replicate Existing Product
-    -- Reformulate Existing Product
+    -- Replicate Existing Product: Given a product, tell me what substances it is made from and "why" (uses) so I can replicate it.
+    -- Reformulate Existing Product: Given a product, find "similar" products then tell me what substances they are made from individually and in some aggregate fashion, so I can replicate it.
 
 local node = NodeGet("Product", "52143")
 
