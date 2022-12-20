@@ -117,38 +117,52 @@ local unique_brand = {}
 local has_brand = {}
 local is_type = {}
 local has_use = {}
+local prod_properties = {}
+local current_product = 0
 for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/product_composition_data_20201216.csv", ",") do
-    unique_brand[pcd.brand_name] = true
-    has_brand[pcd.prod_title] = pcd.brand_name
-    is_type[pcd.prod_title] = pcd.puc_id
+    id = tostring(pcd.product_id)
+    if (current_product ~= pcd.product_id) then
+        local properties = "{\"title\":".."\""..pcd.prod_title.."\""
+        if (pcd.raw_min_comp ~= "NA") then
+           properties = properties..",\"raw_min_comp\":".."\""..pcd.raw_min_comp.."\""
+        end
+        if (pcd.raw_central_comp ~= "NA") then
+           properties = properties..",\"raw_central_comp\":".."\""..pcd.raw_central_comp.."\""
+        end
+        if (pcd.raw_max_comp ~= "NA") then
+           properties = properties..",\"raw_max_comp\":".."\""..pcd.raw_max_comp.."\""
+        end
+        if (pcd.clean_min_wf ~= "NA") then
+           properties = properties..",\"clean_min_wf\":"..pcd.clean_min_wf
+        end
+        if (pcd.clean_central_wf ~= "NA") then
+           properties = properties..",\"clean_central_wf\":"..pcd.clean_central_wf
+        end
+        if (pcd.clean_max_wf ~= "NA") then
+            properties = properties..",\"clean_max_wf\":"..pcd.clean_max_wf
+        end
+        properties = properties.."}"
+        NodeAdd("Product", id, properties)
+        current_product = pcd.product_id
+
+        -- Connect Product to Brand
+        if (pcd.brand_name ~= "NA") then
+           if (unique_brand[pcd.brand_name] ~= nil) then
+               RelationshipAdd("HAS_BRAND", "Product", id, "Brand", pcd.brand_name)
+           else
+               NodeAdd("Brand", pcd.brand_name)
+               RelationshipAdd("HAS_BRAND", "Product", id, "Brand", pcd.brand_name)
+           end
+        end
+
+        -- Connect Product to PUC_Type
+        RelationshipAdd("IS_TYPE", "Product", id, "PUC_Type", tostring(pcd.puc_id))
+    end
+
     if (functional_use_id ~= "NA") then
-        has_use[pcd.functional_use_id] = pcd.prod_title
+        RelationshipAdd("FUNCTIONS_AS", "Product", id, "Function", tostring(pcd.functional_use_id))
     end
-end
-
-for brand_name, _ in pairs(unique_brand) do
-    if (brand_name ~= "NA") then
-        NodeAdd("Brand", brand_name)
-    end
-end
-
-for prod_title, brand_name in pairs(has_brand) do
-    NodeAdd("Product", prod_title)
-    if (brand_name ~= "NA") then
-        RelationshipAdd("HAS_BRAND", "Product", prod_title, "Brand", brand_name)
-    end
-end
-
-for functional_use_id, prod_title in pairs(has_use) do
-     RelationshipAdd("FUNCTIONS_AS", "Product", prod_title, "Function", tostring(functional_use_id))
-end
-
-for prod_title, puc_id in pairs(is_type) do
-     RelationshipAdd("IS_TYPE", "Product", prod_title, "PUC_Type", tostring(puc_id))
-end
-
-for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/product_composition_data_20201216.csv", ",") do
-    RelationshipAdd("HAS_CHEMICAL", "Product", pcd.prod_title, "Chemical", tostring(pcd.chemical_id))
+    RelationshipAdd("HAS_CHEMICAL", "Product", id, "Chemical", tostring(pcd.chemical_id))
 end
 
 local nodes_count = AllNodesCounts()

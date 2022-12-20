@@ -58,11 +58,19 @@ File: list_presence_dictionary_20201216.csv
 File: product_composition_data_20201216.csv
 
     Brand(brand_name)
-    Product(prod_title)
-    HAS_BRAND(Product, prod_title, Brand, brand_name)
-    IS_TYPE(Product, prod_title, PUC_Type, puc_id)
-    FUNCTIONS_AS(Product, prod_title, Function, functional_use_id)
-    HAS_CHEMICAL(Product, prod_title, Chemical, chemical_id)
+    Product(prod_id)
+        title:string
+        raw_min_comp:string
+        raw_central_comp:string
+        raw_max_comp:string
+        clean_min_wf:double
+        clean_central_wf:double
+        clean_max_wf:double
+
+    HAS_BRAND(Product, prod_id, Brand, brand_name)
+    IS_TYPE(Product, prod_id, PUC_Type, puc_id)
+    FUNCTIONS_AS(Product, prod_id, Function, functional_use_id)
+    HAS_CHEMICAL(Product, prod_id, Chemical, chemical_id)
 
 File: PUC_dictionary_20201216.csv
 
