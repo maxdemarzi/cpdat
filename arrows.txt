@@ -1,0 +1,74 @@
+<ul class="graph-diagram-markup" data-internal-scale="1" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="-296.0223445892334" data-y="-72.04690933227539">
+    <span class="caption">Chemical</span><dl class="properties"><dt>id</dt><dd>Key</dd><dt>name</dt><dd>String</dd><dt>DTXSID</dt><dd>String</dd><dt>curation_level</dt><dd>String</dd><dt>preferred_casrn</dt><dd>String</dd><dt>preferred_name</dt><dd>String</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-296.0223445892334" data-y="-1049.5338134765625">
+    <span class="caption">Document</span><dl class="properties"><dt>id</dt><dd>Key</dd><dt>title</dt><dd>String</dd><dt>subtitle</dt><dd>String</dd><dt>date</dt><dd>Date</dd></dl></li>
+  <li class="node" data-node-id="2" data-x="493.5244445800781" data-y="-72.04690933227539">
+    <span class="caption">Function</span><dl class="properties"><dt>id</dt><dd>key</dd></dl></li>
+  <li class="node" data-node-id="3" data-x="493.5244445800781" data-y="-1423.7705030441284">
+    <span class="caption">Function Category</span>
+  </li>
+  <li class="node" data-node-id="4" data-x="493.5244445800781" data-y="-767.3690137863159">
+    <span class="caption">Function Use</span>
+  </li>
+  <li class="node" data-node-id="5" data-x="-1233.0262722373009" data-y="-1049.5338134765625">
+    <span class="caption">Reason Listed</span><dl class="properties"><dt>name</dt><dd>string</dd><dt>definition</dt><dd>string</dd><dt>kind</dt><dd>string</dd></dl></li>
+  <li class="node" data-node-id="6" data-x="1331.7121868133545" data-y="682.7785224914551">
+    <span class="caption">Brand</span>
+  </li>
+  <li class="node" data-node-id="7" data-x="493.5244445800781" data-y="682.7785224914551">
+    <span class="caption">Product</span>
+  </li>
+  <li class="node" data-node-id="8" data-x="1137.5654096603394" data-y="-47.597944021224976">
+    <span class="caption">PUC Type</span><dl class="properties"><dt>name</dt><dd>String</dd><dt>description</dt><dd>string</dd><dt>code</dt><dd>String</dd><dt>kind</dt><dd>String</dd></dl></li>
+  <li class="node" data-node-id="9" data-x="1137.5654096603394" data-y="-828.5920104980469">
+    <span class="caption">PUC Family</span>
+  </li>
+  <li class="node" data-node-id="10" data-x="1137.5654096603394" data-y="-1445.9020385742188">
+    <span class="caption">PUC Category</span>
+  </li>
+  <li class="node" data-node-id="11" data-x="-1199.4488338828087" data-y="-301.0192835330963">
+    <span class="caption">QSUR Category</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="2">
+    <span class="type">REPORTED_FUNCTION</span>
+  </li>
+  <li class="relationship" data-from="3" data-to="4">
+    <span class="type">HAS_USE</span>
+  </li>
+  <li class="relationship" data-from="4" data-to="2">
+    <span class="type">HAS_FUNCTION</span>
+  </li>
+  <li class="relationship" data-from="2" data-to="0">
+    <span class="type">USES_CHEMICAL</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">REPORTED_CHEMICAL</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="5">
+    <span class="type">REPORTED_REASON</span>
+  </li>
+  <li class="relationship" data-from="0" data-to="5">
+    <span class="type">IS_PRESENT</span>
+  </li>
+  <li class="relationship" data-from="7" data-to="6">
+    <span class="type">HAS_BRAND</span>
+  </li>
+  <li class="relationship" data-from="7" data-to="8">
+    <span class="type">IS_TYPE</span>
+  </li>
+  <li class="relationship" data-from="7" data-to="2">
+    <span class="type">FUNCTIONS_AS</span>
+  </li>
+  <li class="relationship" data-from="7" data-to="0">
+    <span class="type">HAS_CHEMICAL</span>
+  </li>
+  <li class="relationship" data-from="9" data-to="8">
+    <span class="type">HAS_TYPE</span>
+  </li>
+  <li class="relationship" data-from="10" data-to="9">
+    <span class="type">HAS_FAMILY</span>
+  </li>
+  <li class="relationship" data-from="0" data-to="11">
+    <span class="type">PROBABLE_USE</span><dl class="properties"><dt>probability</dt><dd>double</dd></dl></li>
+</ul>

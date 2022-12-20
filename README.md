@@ -9,6 +9,8 @@ Schema:
 
 ![Visual of Schema](https://github.com/maxdemarzi/cpdat/blob/main/schema.png?raw=true)
 
+To change the visual of the schema go to [Arrows](http://www.apcjones.com/arrows/#) load then edit markup from [arrows.txt](https://github.com/maxdemarzi/cpdat/blob/main/arrows.txt) file.
+
 File: chemical_dictionary_20201216.csv
 
     Chemical(chemical_id)
