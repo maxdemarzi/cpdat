@@ -1,22 +1,24 @@
+local unique_substance = {}
 for i, chem in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/chemical_dictionary_20201216.csv", ",") do
     local properties = "{\"name\":".."\""..chem.raw_chem_name.."\""
     if (chem.raw_casrn ~= "NA") then
        properties = properties..",\"subtitle\":".."\""..chem.raw_casrn.."\""
     end
-    if (chem.preferred_name ~= "NA") then
-       properties = properties..",\"preferred_name\":".."\""..chem.preferred_name.."\""
-    end
-    if (chem.preferred_casrn ~= "NA") then
-        properties = properties..",\"preferred_casrn\":".."\""..chem.preferred_casrn.."\""
-    end
-    if (chem.DTXSID ~= "NA") then
-        properties = properties..",\"DTXSID\":".."\""..chem.DTXSID.."\""
-    end
     if (chem.curation_level ~= "") then
        properties = properties..",\"curation_level\":".."\""..chem.curation_level.."\""
     end
-       properties = properties.."}"
-       NodeAdd("Chemical", chem.chemical_id, properties)
+   properties = properties.."}"
+   NodeAdd("Chemical", chem.chemical_id, properties)
+
+    if (chem.DTXSID ~= "NA") then
+        if (unique_substance[chem.DTXSID] == nil) then
+            NodeAdd("Substance", chem.DTXSID,
+                "{\"preferred_name\":".."\""..chem.preferred_name.."\","..
+                "\"preferred_casrn\":".."\""..chem.preferred_casrn.."\"}")
+            unique_substance[chem.DTXSID] = true
+       end
+       RelationshipAdd("IS_SUBSTANCE", "Chemical", chem.chemical_id, "Substance", chem.DTXSID)
+    end
 end
 
 
@@ -162,17 +164,6 @@ for i, pcd in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/prod
     RelationshipAdd("HAS_CHEMICAL", "Product", id, "Chemical", tostring(pcd.chemical_id))
 end
 
-local chemicals = {}
-for i, chemical in pairs(AllNodes("Chemical", 0, AllNodesCount("Chemical"))) do
-    if (chemicals[chemical:getProperty("DTXSID")] ~= nil) then
-        table.insert(chemicals[chemical:getProperty("DTXSID")], chemical:getKey() )
-    else
-        local nested = { chemical:getKey() }
-        chemicals[chemical:getProperty("DTXSID")] = nested
-    end
-
-end
-
 local unique_qsur = {}
 for i, qsur in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/QSUR_data_20201216.csv", ",") do
     NodeAdd("Substance", qsur.DTXSID,
@@ -186,13 +177,6 @@ for i, qsur in ftcsv.parseLine("/home/max/IdeaProjects/cpdat/Release20201216/QSU
 
     RelationshipAdd("PROBABLE_USE", "Substance", qsur.DTXSID, "QSUR_Category", qsur.harmonized_function,
                 "{\"probability\":"..qsur.probability.."}")
-
-    local chemicals = chemicals[qsur.DTXSID]
-    if (chemicals ~= nil) then
-        for i, chemical_id in pairs(chemicals) do
-            RelationshipAdd("IS_SUBSTANCE", "Chemical", chemical_id, "Substance", qsur.DTXSID)
-        end
-    end
 end
 
 local nodes_count = AllNodesCounts()

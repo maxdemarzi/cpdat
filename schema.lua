@@ -1,9 +1,6 @@
 NodeTypeInsert("Chemical")
 NodePropertyTypeAdd("Chemical", "name", "string")
 NodePropertyTypeAdd("Chemical", "casrn", "string")
-NodePropertyTypeAdd("Chemical", "preferred_name", "string")
-NodePropertyTypeAdd("Chemical", "preferred_casrn", "string")
-NodePropertyTypeAdd("Chemical", "DTXSID", "string")
 NodePropertyTypeAdd("Chemical", "curation_level", "string")
 
 NodeTypeInsert("Document")
