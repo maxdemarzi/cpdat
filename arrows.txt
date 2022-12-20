@@ -27,9 +27,11 @@
   <li class="node" data-node-id="10" data-x="1137.5654096603394" data-y="-1445.9020385742188">
     <span class="caption">PUC Category</span>
   </li>
-  <li class="node" data-node-id="11" data-x="-1199.4488338828087" data-y="-301.0192835330963">
+  <li class="node" data-node-id="11" data-x="-1864.1741756796837" data-y="-72.04690933227539">
     <span class="caption">QSUR Category</span>
   </li>
+  <li class="node" data-node-id="12" data-x="-1030.6915283203125" data-y="-72.04690933227539">
+    <span class="caption">Substance</span><dl class="properties"><dt>preferred_casrn</dt><dd>String</dd><dt>preferred_name</dt><dd>String</dd></dl></li>
   <li class="relationship" data-from="1" data-to="2">
     <span class="type">REPORTED_FUNCTION</span>
   </li>
@@ -69,6 +71,9 @@
   <li class="relationship" data-from="10" data-to="9">
     <span class="type">HAS_FAMILY</span>
   </li>
-  <li class="relationship" data-from="0" data-to="11">
+  <li class="relationship" data-from="0" data-to="12">
+    <span class="type">IS_SUBSTANCE</span>
+  </li>
+  <li class="relationship" data-from="12" data-to="11">
     <span class="type">PROBABLE_USE</span><dl class="properties"><dt>probability</dt><dd>double</dd></dl></li>
 </ul>
